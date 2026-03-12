@@ -124,26 +124,12 @@ export default {
       const mailbox = extractEmail(resolvedRecipient || toHeader);
       const sender = extractEmail(fromHeader);
 
-      // 存储到 R2
-      const r2 = env.MAIL_EML;
+      // （D1-only）不存 R2：不写入完整 EML，只保留验证码/预览到 D1
+      // const r2 = env.MAIL_EML;
       let objectKey = '';
       try {
-        const now = new Date();
-        const y = now.getUTCFullYear();
-        const m = String(now.getUTCMonth() + 1).padStart(2, '0');
-        const d = String(now.getUTCDate()).padStart(2, '0');
-        const hh = String(now.getUTCHours()).padStart(2, '0');
-        const mm = String(now.getUTCMinutes()).padStart(2, '0');
-        const ss = String(now.getUTCSeconds()).padStart(2, '0');
-        const keyId = (globalThis.crypto?.randomUUID && crypto.randomUUID()) || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-        const safeMailbox = (mailbox || 'unknown').toLowerCase().replace(/[^a-z0-9@._-]/g, '_');
-        objectKey = `${y}/${m}/${d}/${safeMailbox}/${hh}${mm}${ss}-${keyId}.eml`;
-        if (r2 && rawBuffer) {
-          await r2.put(objectKey, new Uint8Array(rawBuffer), { httpMetadata: { contentType: 'message/rfc822' } });
-        }
-      } catch (e) {
-        console.error('R2 put failed:', e);
-      }
+        // 保持 objectKey 为空即可
+      } catch (_) {}
 
       // 生成预览和验证码
       const preview = (() => {
@@ -197,7 +183,7 @@ export default {
         subject || '(无主题)',
         verificationCode || null,
         preview || null,
-        'mail-eml',
+        objectKey ? 'mail-eml' : null,
         objectKey || ''
       ).run();
     } catch (err) {

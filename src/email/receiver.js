@@ -103,7 +103,7 @@ export async function handleEmailReceive(request, db, env) {
       subject || '(无主题)',
       verificationCode || null,
       preview || null,
-      'mail-eml',
+      objectKey ? 'mail-eml' : null,
       objectKey || ''
     ).run();
 

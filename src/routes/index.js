@@ -242,7 +242,7 @@ async function delegateApiRequest(context) {
       mockOnly: true,
       resendApiKey: RESEND_API_KEY,
       adminName: ADMIN_NAME,
-      r2: env.MAIL_EML,
+      r2: env.MAIL_EML || null,
       authPayload
     });
   }
@@ -253,7 +253,7 @@ async function delegateApiRequest(context) {
       mockOnly: false,
       resendApiKey: RESEND_API_KEY,
       adminName: ADMIN_NAME,
-      r2: env.MAIL_EML,
+      r2: env.MAIL_EML || null,
       authPayload,
       mailboxOnly: true
     });
@@ -263,7 +263,7 @@ async function delegateApiRequest(context) {
     mockOnly: false,
     resendApiKey: RESEND_API_KEY,
     adminName: ADMIN_NAME,
-    r2: env.MAIL_EML,
+    r2: env.MAIL_EML || null,
     authPayload
   });
 }

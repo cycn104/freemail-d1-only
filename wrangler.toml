@@ -21,10 +21,10 @@ directory = "public"
 binding = "ASSETS"
 
 
-# R2 存储桶绑定（用于保存完整 EML 内容）
-[[r2_buckets]]
-binding = "MAIL_EML"
-bucket_name = "mail-eml"
+# （D1-only 版本）
+# 注意：原项目默认依赖 R2 存储完整 EML。此版本移除 R2 绑定，功能降级为：
+# - 仍可接收邮件并把验证码/预览写入 D1
+# - 不支持 EML 下载/附件/完整原文（除非另行扩展存储）
 
 # wrangler.toml (wrangler v3.88.0^) 日志服务
 # [observability.logs]

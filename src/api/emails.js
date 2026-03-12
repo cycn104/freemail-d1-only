@@ -155,7 +155,8 @@ export async function handleEmailsApi(request, db, url, path, options) {
     const row = (results || [])[0];
     if (!row || !row.r2_object_key) return errorResponse('未找到对象', 404);
     try {
-      if (!r2) return errorResponse('R2 未绑定', 500);
+      // D1-only: 没有 R2 绑定时直接返回不可用
+      if (!r2) return errorResponse('D1-only 模式未启用 R2，无法下载 EML', 501);
       const obj = await r2.get(row.r2_object_key);
       if (!obj) return errorResponse('对象不存在', 404);
       const headers = new Headers({ 'Content-Type': 'message/rfc822' });
